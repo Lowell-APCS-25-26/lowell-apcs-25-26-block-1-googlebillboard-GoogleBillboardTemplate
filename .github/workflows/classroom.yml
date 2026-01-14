@@ -13,18 +13,26 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: gradle test
-      id: gradle-test
+    - name: isPrimeCorrect
+      id: isprimecorrect
       uses: classroom-resources/autograding-command-grader@v1
       with:
-        test-name: gradle test
+        test-name: isPrimeCorrect
         setup-command: ''
-        command: gradle test
+        command: gradle test --tests "*isPrimeCorrect*"
         timeout: 10
-        max-score: 1
+    - name: first10DigitPrimeInETest
+      id: first10digitprimeinetest
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: first10DigitPrimeInETest
+        setup-command: ''
+        command: gradle test --tests "*first10DigitPrimeInETest*"
+        timeout: 10
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        GRADLE-TEST_RESULTS: "${{steps.gradle-test.outputs.result}}"
+        ISPRIMECORRECT_RESULTS: "${{steps.isprimecorrect.outputs.result}}"
+        FIRST10DIGITPRIMEINETEST_RESULTS: "${{steps.first10digitprimeinetest.outputs.result}}"
       with:
-        runners: gradle-test
+        runners: isprimecorrect,first10digitprimeinetest
